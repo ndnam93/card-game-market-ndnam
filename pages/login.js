@@ -40,7 +40,7 @@ export default () => {
             <Input />
           </Form.Item>
           <Form.Item name="password" initialValue="123456" label="Password">
-            <Input.Password placeholder="Password" />
+            <Input.Password placeholder="a12345678" />
           </Form.Item>
           <Form.Item>
             <Button className="btn-signin" htmlType="submit" type="primary" size="large">

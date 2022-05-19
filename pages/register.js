@@ -34,13 +34,13 @@ export default () => {
           <Form.Item
             name="email"
             rules={[{ message: 'Please input your Email!', required: true }]}
-            initialValue="name@example.com"
+            initialValue=""
             label="Email Address"
           >
             <Input />
           </Form.Item>
           <Form.Item name="password" initialValue="123456" label="Password">
-            <Input.Password placeholder="Password" />
+            <Input.Password />
           </Form.Item>
           <Form.Item>
             <Button className="btn-signin" htmlType="submit" type="primary" size="large">
