@@ -1,10 +1,10 @@
 import { Form, Input, Button } from 'antd';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Heading from '../../components/heading/heading';
-import Alert from "../../components/alerts/alerts";
-import { AuthWrapper } from './style';
-import { authService } from '../../services';
+import Heading from '../components/heading/heading';
+import Alert from "../components/alerts/alerts";
+import { AuthWrapper } from '../styles/authStyle';
+import { authService } from '../services';
 
 
 export default () => {

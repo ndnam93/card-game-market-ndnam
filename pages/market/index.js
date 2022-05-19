@@ -11,12 +11,23 @@ export default () => {
   const [user, setUser] = useState({});
   const userCards = user?.cards || [];
   const [cards, setCards] = useState([]);
+  const [coins, setCoins] = useState(0);
   
   useEffect(() => {
     cardService.getAll().then(x => setCards(x));
-    authService.getUser().then(x => setUser(x));
+    authService.getUser().then(x => {
+      setUser(x);
+    });
   }, []);
-  
+  useEffect(() => {
+    if (userCards.length === 0 || cards.length === 0) return;
+    const totalCost = userCards.reduce((total, userCard) => {
+      const card = cards.find(c => c.id == userCard.card_id);
+      return total + card.price * userCard.count;
+    }, 0)
+    setCoins(10 - totalCost);
+  }, [userCards, cards])
+
 
   const returnCard = (cardId) => {
     let userCard = userCards.find(c => c.card_id === cardId);
@@ -34,7 +45,9 @@ export default () => {
     let userCard = userCards.find(c => c.card_id === cardId);
     const count = userCard ? userCard.count + 1 : 1;
     newCollection.push({card_id: cardId, count});
-    cardService.updateUserCards(user.id, newCollection).then(x => setUser(x));
+    cardService.updateUserCards(user.id, newCollection)
+      .then(x => setUser(x))
+      .catch(err => alert(err));
   }
 
   return (
@@ -44,7 +57,7 @@ export default () => {
       </Head>
       
       <div className={styles.main}>
-        <PageHeader ghost title="My cards"/>
+        <PageHeader ghost title="My cards" subTitle={`Available coins: ${coins}`}/>
         <Row gutter={25}>
           {userCards.map(userCard => {
             const card = cards.find(c => c.id === userCard.card_id);
