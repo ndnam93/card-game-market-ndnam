@@ -28,6 +28,15 @@ export default () => {
     cardService.updateUserCards(user.id, newCollection).then(x => setUser(x));
   };
 
+  const buyCard = (cardId) => {
+    let newCollection = _.reject(userCards, c => c.card_id == cardId)
+      .map(({card_id, count}) => ({card_id, count}));
+    let userCard = userCards.find(c => c.card_id === cardId);
+    const count = userCard ? userCard.count + 1 : 1;
+    newCollection.push({card_id: cardId, count});
+    cardService.updateUserCards(user.id, newCollection).then(x => setUser(x));
+  }
+
   return (
     <>
       <Head>
@@ -53,7 +62,7 @@ export default () => {
         <Row gutter={25}>
           {cards.map(card => (
             <Col xs={12} sm={8} xl={6} xxl={4} key={card.id}>
-              <Button type="primary" block>Buy</Button>
+              <Button type="primary" block onClick={() => buyCard(card.id)}>Buy</Button>
               <GameCard {...card} />
             </Col>
           ))}

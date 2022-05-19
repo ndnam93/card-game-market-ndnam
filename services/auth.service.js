@@ -5,6 +5,16 @@ import { fetchWrapper } from '../helpers';
 const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 const userSubject = new BehaviorSubject(typeof window === 'object' && JSON.parse(localStorage.getItem('user')));
 
+function register(email, password) {
+    return fetchWrapper.post(`${baseUrl}/auth/register`, { email, password })
+        .then(user => {
+            userSubject.next(user);
+            localStorage.setItem('user', JSON.stringify(user));
+
+            return user;
+        });
+}
+
 function login(email, password) {
     return fetchWrapper.post(`${baseUrl}/auth/login`, { email, password })
         .then(user => {
@@ -29,6 +39,7 @@ function getUser() {
 export const authService = {
   user: userSubject,
   get userValue () { return userSubject.value },
+  register,
   login,
   logout,
   getUser,
